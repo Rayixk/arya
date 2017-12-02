@@ -1,0 +1,138 @@
+{% extends 'arya/layout.html' %}
+{% load arya_list %}
+
+
+{% block css %}
+    <style>
+        .row {
+            margin: 5px 15px;
+        }
+
+        .comb-search .row .whole {
+            width: 60px;
+            float: left;
+
+        }
+
+        .comb-search .row .others {
+            padding-left: 60px;
+        }
+
+        .comb-search .row a {
+            display: inline-block;
+            padding: 5px 8px;
+            margin: 3px;
+            border: 1px solid #d4d4d4;
+
+        }
+
+        .comb-search .row a {
+            display: inline-block;
+            padding: 5px 8px;
+            margin: 3px;
+            border: 1px solid #d4d4d4;
+        }
+
+        .comb-search a.active {
+            color: #fff;
+            background-color: #337ab7;
+            border-color: #2e6da4;
+        }
+    </style>
+{% endblock %}
+
+{% block breadcrumb %}
+    <ol class="breadcrumb">
+        <li><a href="#">首页</a></li>
+        <li class="active">数据列表</li>
+    </ol>
+{% endblock %}
+
+
+{% block content %}
+
+    <div>
+        {% if cl.list_filter %}
+            <div class="comb-search">
+                {% for row in cl.gen_list_filter %}
+                    <div class="row">
+                        {% for col in row %}
+                            {{ col }}
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <!-- 定制模糊搜索 开始 -->
+        {% if cl.search_list %}
+            <div class="row">
+                <form action="">
+                    <input type="text" name="{{ cl.search_attr.name }}" value="{{ cl.search_attr.value }}" class="form-control"
+                           style="display: inline-block;width: 250px" placeholder="请输入关键字">
+                    <button type="submit" class="btn btn-primary">
+                        <span class="glyphicon glyphicon-search"></span>
+                    </button>
+                </form>
+            </div>
+        {% endif %}
+        <!-- 定制模糊搜索 结束 -->
+
+        <form method="post" class="form-horizontal" onsubmit="return check()">
+            {% csrf_token %}
+            <div class="row">
+
+                <!-- 定制Action 开始 -->
+                {% if cl.actions %}
+                    {% show_actions cl %}
+                {% endif %}
+                <!-- 定制Action 结束 -->
+
+
+                <!-- 添加按钮 开始 -->
+                {% if cl.show_add_btn %}
+                    {{ cl.add_html }}
+                {% endif %}
+                <!-- 添加按钮 结束 -->
+
+            </div>
+            <div class="row">
+                <!-- 数据表格 -->
+                {% show_result_list cl %}
+                <div style="text-align: right">
+                    <ul class="pagination" style="margin: 0;">
+                        {{ cl.pager.page_html|safe }}
+                    </ul>
+                </div>
+            </div>
+
+        </form>
+
+    </div>
+
+
+{% endblock %}
+
+{% block js %}
+    <script>
+        $(function () {
+            $('#headCheckBox').click(function () {
+                $(this).parent().parent().parent().next().find(':checkbox').prop('checked', $(this).prop('checked'));
+            })
+
+        })
+
+        function check() {
+            if($('#actionSelect').val()==="generate_survey"){
+                var ss = $('#headCheckBox').parent().parent().parent().next().find(':checked')
+                if(ss.length!==1){
+                    alert("请勿同时选择多份");
+                    return false
+                }
+{#                console.log#}
+
+
+            }
+        }
+    </script>
+{% endblock %}

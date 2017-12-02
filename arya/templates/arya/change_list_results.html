@@ -1,0 +1,20 @@
+<section class="panel">
+    <table class="table table-bordered table-advance table-hover">
+        <thead>
+        <tr>
+            {% for item in headers %}
+                <th>{{ item }}</th>
+            {% endfor %}
+        </tr>
+        </thead>
+        <tbody>
+        {% for row in result %}
+            <tr>
+                {% for colm in row %}
+                    <td>{{ colm }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</section>

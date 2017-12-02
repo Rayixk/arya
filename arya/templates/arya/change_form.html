@@ -1,0 +1,84 @@
+{% block css %}
+    <style>
+        label{
+            text-align: right!important;
+            font-weight: 500!important;
+        }
+    </style>
+{% endblock %}
+
+<div style="padding: 0 15px 15px 15px">
+    <section class="panel" style="padding: 20px 0 1px 0">
+    <form class="form-horizontal" method="POST" novalidate>
+        {% csrf_token %}
+        {% for col in form %}
+            <div class="form-group col-sm-6">
+                <label class="col-sm-3 control-label">
+                    {% if col.item.field.label %}
+                        {{ col.item.field.label }}
+                    {% else %}
+                        {{ col.item.name }}
+                    {% endif %}
+
+                </label>
+                <div class="col-sm-9" style="position: relative">
+                    {{ col.item }}
+                    {% if col.popup %}
+                        <div style="position: absolute;right: -5px;top: 8px;z-index: 9999;">
+                            <a href="javascript:openPopup('{{ col.popup_url }}');"
+                                class="glyphicon glyphicon-plus">
+                            </a>
+                        </div>
+                    {% endif %}
+                    {{ col.item.errors.0 }}
+                </div>
+            </div>
+        {% endfor %}
+
+        <div class="form-group">
+            <div class="col-sm-offset-8 col-sm-2" style="text-align: right">
+                {% if not popup_id and not is_change %}
+                    <input type="submit" name="submit_name" class="btn btn-info" value="继续添加"/>
+                {% endif %}
+            </div>
+            <div class="col-sm-2">
+                {% if is_change %}
+                    <input type="submit" name="submit_name" class="btn btn-primary" style="margin-left: 20px"
+                           value="&nbsp;&nbsp;保存&nbsp;&nbsp;"/>
+                {% else %}
+                    <input type="submit" name="submit_name" class="btn btn-success" value="确认添加"/>
+                {% endif %}
+
+            </div>
+        </div>
+    </form>
+</section>
+</div>
+
+<script>
+
+    window.onload = function () {
+        addClassToTags();
+    };
+
+    function addClassToTags() {
+        var items = document.getElementsByClassName("col-sm-9");
+        for (var i = 0; i < items.length; i++) {
+            items[i].firstElementChild.classList.add("form-control")
+        }
+    }
+
+    function popupCallback(response) {
+        var tag = document.createElement('option');
+        tag.value = response.pk;
+        tag.innerHTML = response.value;
+        tag.setAttribute('selected', 'selected');
+        document.getElementById(response.popup_id).appendChild(tag);
+
+    }
+    function openPopup(url) {
+        var popupPage = window.open(url, url, "status=1, height=500px, width=1000px, toolbar=0, resizeable=0");
+    }
+
+
+</script>

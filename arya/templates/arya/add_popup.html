@@ -1,0 +1,21 @@
+{% load static %}
+{% load arya_form %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'arya/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'arya/css/bootstrap-reset.css' %}" rel="stylesheet">
+    {% block css %}{% endblock %}
+</head>
+<body>
+
+<div class="container">
+    <h3>添加数据</h3>
+    {% show_form form request popup_id %}
+</div>
+
+</body>
+</html>

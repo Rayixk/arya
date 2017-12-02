@@ -1,0 +1,23 @@
+{% extends 'arya/layout.html' %}
+{% load static %}
+{% load arya_form %}
+
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'arya/css/form-control.css' %}"/>
+{% endblock %}
+
+
+{% block breadcrumb %}
+    <ol class="breadcrumb">
+        <li><a href="#">首页</a></li>
+        <li class="active">修改数据</li>
+    </ol>
+{% endblock %}
+
+
+{% block content %}
+    <div>
+        {% show_form form request %}
+    </div>
+{% endblock %}
